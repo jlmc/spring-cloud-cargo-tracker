@@ -26,6 +26,8 @@ dist/
 # JetBrains IDE
 .idea/
 
+.volumes
+
 # Unit test reports
 TEST*.xml
 
@@ -47,4 +49,3 @@ Thumbs.db
 *.flv
 *.mov
 *.wmv
-

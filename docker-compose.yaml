@@ -1,0 +1,64 @@
+version: '3.8'
+
+services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "5671:5671"
+      - "15672:15672"
+    volumes:
+      - ./docker/rabbitmq/rabbitmq.config:/etc/rabbitmq/rabbitmq.config:ro
+      - ./docker/rabbitmq/rabbitmq-definitions.json:/etc/rabbitmq/definitions.json:ro
+    restart: always
+    networks:
+      - cargo-network
+
+  postgres:
+    image: postgres:12.2-alpine
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      #- POSTGRES_DB=warehouse_db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - max_prepared_transactions=50
+    command: postgres --max_prepared_transactions=100
+    volumes:
+      - ./docker/postgres/init-user-db.sh:/docker-entrypoint-initdb.d/init-user-db.sh
+      - .volumes/mongodb/warehouse-db:/var/lib/postgresql/data
+    networks:
+      - cargo-network
+
+  mongodb:
+    image: mongo:4.4.5
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin
+    volumes:
+      - .volumes/mongodb:/data/db
+    ports:
+      - "27017:27017"
+    restart: unless-stopped
+    networks:
+      - cargo-network
+
+  redis:
+    image: redis:3.2-alpine
+    ports:
+      - "6379:6379"
+    networks:
+      - cargo-network
+
+  # docker run -d -p 9411:9411 openzipkin/zipkin
+  zipkin:
+    image: openzipkin/zipkin:2
+    ports:
+      - "9411:9411"
+    networks:
+      - cargo-network
+
+networks:
+  cargo-network:
+    driver: bridge
