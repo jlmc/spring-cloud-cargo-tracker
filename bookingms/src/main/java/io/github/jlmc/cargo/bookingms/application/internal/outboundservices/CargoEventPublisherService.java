@@ -1,15 +1,20 @@
 package io.github.jlmc.cargo.bookingms.application.internal.outboundservices;
 
 import io.github.jlmc.cargo.bookingms.infrastructure.brokers.rabbitmq.CargoEventSource;
+import io.github.jlmc.cargo.bookingms.shareddomain.events.CargoBookedEvent;
+import io.github.jlmc.cargo.bookingms.shareddomain.events.CargoRoutedEvent;
+import org.springframework.cloud.stream.annotation.EnableBinding;
+import org.springframework.integration.support.MessageBuilder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.event.TransactionalEventListener;
 
 @Service
-//@EnableBinding(CargoEventSource.class)
+@EnableBinding(CargoEventSource.class)
 public class CargoEventPublisherService {
 
-    CargoEventSource cargoEventSource;
+    private CargoEventSource cargoEventSource;
 
-    /*
+
     public CargoEventPublisherService(CargoEventSource cargoEventSource){
         this.cargoEventSource = cargoEventSource;
     }
@@ -23,6 +28,4 @@ public class CargoEventPublisherService {
     public void handleCargoRoutedEvent(CargoRoutedEvent cargoRoutedEvent){
         cargoEventSource.cargoRouting().send(MessageBuilder.withPayload(cargoRoutedEvent).build());
     }
-
-     */
 }

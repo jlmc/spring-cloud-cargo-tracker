@@ -6,6 +6,13 @@
 docker-compose up rabbitmq postgres zipkin -d
 ```
 
+# services
+
+- [RabbitMQ](http://localhost:15672/#/exchanges)
+
+
+# build
+
 ```shell
 mvn clean package
 ```
