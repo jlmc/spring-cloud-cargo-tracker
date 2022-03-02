@@ -8,16 +8,10 @@ import org.springframework.messaging.SubscribableChannel;
  */
 public interface CargoEventInput {
 
-    /**
-     * Input channel name.
-     */
     String ROUTINGS = "routings";
 
     String BOOKINGS = "bookings";
 
-    /**
-     * @return input channel.
-     */
     @Input(value = ROUTINGS)
     SubscribableChannel routings();
 
