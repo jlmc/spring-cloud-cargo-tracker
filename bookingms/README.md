@@ -14,9 +14,9 @@ curl -L -m 500 -X POST 'localhost:8081/booking' \
 
 
 ```shell
-curl -L -m 500 -X GET 'localhost:8081/booking/f173d578' | jq .
+curl -L -m 500 -X GET 'localhost:8081/booking/c5016ff0' | jq .
 ```
 
 ```shell
-curl -L -m 500 -X POST 'localhost:8081/booking/f173d578/route' | jq .
+curl -L -m 500 -X POST 'localhost:8081/booking/c5016ff0/route' | jq .
 ```

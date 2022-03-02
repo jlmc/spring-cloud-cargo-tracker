@@ -1,4 +1,4 @@
-package io.github.jlmc.cargo.bookingms.application.internal.outboundservices;
+package io.github.jlmc.cargo.bookingms.application.internal.outboundservices.acl;
 
 import io.github.jlmc.cargo.bookingms.domain.model.valueobjects.CargoItinerary;
 import io.github.jlmc.cargo.bookingms.domain.model.valueobjects.Leg;
@@ -6,16 +6,13 @@ import io.github.jlmc.cargo.bookingms.domain.model.valueobjects.RouteSpecificati
 import io.github.jlmc.cargo.bookingms.shareddomain.TransitEdge;
 import io.github.jlmc.cargo.bookingms.shareddomain.TransitPath;
 import org.springframework.stereotype.Service;
-
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.List;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @Service
 public class ExternalCargoRoutingService {
     public CargoItinerary fetchRouteForSpecification(RouteSpecification routeSpecification) {
-        TransitPath transitPath = extracted();
+        TransitPath transitPath = fetchTransitPath(routeSpecification);
 
         var legs =
                 transitPath.getTransitEdges()
@@ -39,19 +36,19 @@ public class ExternalCargoRoutingService {
                 edge.getToDate());
     }
 
-    private TransitPath extracted() {
-        TransitPath transitPath = new TransitPath();
-        List<TransitEdge> transitEdges = new ArrayList<>();
-        for (int i = 0; i < 4; i++) {
-            TransitEdge transitEdge = new TransitEdge();
-            transitEdge.setVoyageNumber("V11");
-            transitEdge.setFromUnLocode("CHK");
-            transitEdge.setFromDate(Instant.now().plus(30L, ChronoUnit.DAYS));
-            transitEdge.setToDate(Instant.now().plus(60L, ChronoUnit.DAYS));
-            transitEdge.setToUnLocode("NYC");
-            transitEdges.add(transitEdge);
-        }
-        transitPath.setTransitEdges(transitEdges);
+    private TransitPath fetchTransitPath(RouteSpecification routeSpecification) {
+        RestTemplate restTemplate = new RestTemplate();
+
+        String uri =
+                UriComponentsBuilder.fromUriString("http://localhost:8082/routing")
+                                       .queryParam("origin", routeSpecification.getOrigin().getUnLocCode())
+                                       .queryParam("destination", routeSpecification.getDestination().getUnLocCode())
+                                       .queryParam("deadline", routeSpecification.getArrivalDeadline().toString()).build()
+                                       .toUriString();
+
+        TransitPath transitPath =
+                //restTemplate.getForObject("<<ROUTING_SERVICE_URL>>/cargorouting/",
+                restTemplate.getForObject(uri, TransitPath.class);
 
         return transitPath;
     }

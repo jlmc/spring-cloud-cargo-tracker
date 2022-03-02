@@ -1,4 +1,4 @@
-package io.github.jlmc.cargo.bookingms.interfaces.repositories;
+package io.github.jlmc.cargo.bookingms.infrastructure.repositories;
 
 import io.github.jlmc.cargo.bookingms.domain.model.aggregates.BookingId;
 import io.github.jlmc.cargo.bookingms.domain.model.aggregates.Cargo;

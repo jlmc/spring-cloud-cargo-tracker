@@ -1,13 +1,13 @@
 package io.github.jlmc.cargo.bookingms.application.internal.commandservices;
 
-import io.github.jlmc.cargo.bookingms.application.internal.outboundservices.BookingIdGeneratorService;
-import io.github.jlmc.cargo.bookingms.application.internal.outboundservices.ExternalCargoRoutingService;
+import io.github.jlmc.cargo.bookingms.application.internal.outboundservices.acl.BookingIdGeneratorService;
+import io.github.jlmc.cargo.bookingms.application.internal.outboundservices.acl.ExternalCargoRoutingService;
 import io.github.jlmc.cargo.bookingms.domain.model.aggregates.BookingId;
 import io.github.jlmc.cargo.bookingms.domain.model.aggregates.Cargo;
 import io.github.jlmc.cargo.bookingms.domain.model.commands.BookCargoCommand;
 import io.github.jlmc.cargo.bookingms.domain.model.commands.RouteCargoCommand;
 import io.github.jlmc.cargo.bookingms.domain.model.valueobjects.CargoItinerary;
-import io.github.jlmc.cargo.bookingms.interfaces.repositories.CargoRepository;
+import io.github.jlmc.cargo.bookingms.infrastructure.repositories.CargoRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -23,7 +23,7 @@ public class CargoBookingCommandService {
 
     private final BookingIdGeneratorService bookingIdGeneratorService;
     private final ExternalCargoRoutingService externalCargoRoutingService;
-    private CargoRepository cargoRepository;
+    private final CargoRepository cargoRepository;
 
     @Transactional(isolation = Isolation.SERIALIZABLE, readOnly = false)
     public BookingId bookCargo(BookCargoCommand bookCargoCommand) {

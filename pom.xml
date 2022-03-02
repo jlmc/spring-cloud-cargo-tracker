@@ -12,6 +12,7 @@
 
     <modules>
         <module>bookingms</module>
+        <module>routingms</module>
     </modules>
 
     <packaging>pom</packaging>

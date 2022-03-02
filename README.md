@@ -10,8 +10,12 @@ docker-compose up rabbitmq postgres zipkin -d
 mvn clean package
 ```
 
-## 1. start up booking-ms
+## 1. start up rotting-ms
+```shell
+java -jar routingms/target/routingms-0.0.1-SNAPSHOT.jar
+```
 
+## 2. start up booking-ms
 ```shell
 java -jar bookingms/target/bookingms-0.0.1-SNAPSHOT.jar
 ```

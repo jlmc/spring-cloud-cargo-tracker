@@ -1,4 +1,4 @@
-package io.github.jlmc.cargo.bookingms.application.internal.outboundservices;
+package io.github.jlmc.cargo.bookingms.application.internal.outboundservices.acl;
 
 import org.springframework.stereotype.Service;
 
