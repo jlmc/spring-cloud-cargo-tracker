@@ -1,6 +1,14 @@
 booking:
-  message: hello world
+  message: hello world 1
 
+
+## Actuator
+### $ curl localhost:8080/actuator/refresh -d {} -H "Content-Type: application/json"
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
 
 spring:
 

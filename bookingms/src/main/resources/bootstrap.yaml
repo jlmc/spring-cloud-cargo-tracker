@@ -11,3 +11,11 @@ spring:
     config:
       uri: http://localhost:8888
       profile: default
+
+## Actuator
+### $ curl localhost:8080/actuator/refresh -d {} -H "Content-Type: application/json"
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'

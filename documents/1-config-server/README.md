@@ -110,3 +110,37 @@ spring:
 - 👆 the address of the configuration server and the profile name that will be fetched.
 
 **3. there is no need to use the application.yaml file, because all the properties will be fetched from the configuration file.**
+
+---
+
+## Refreshable Configuration 
+
+Centralized configuration is a powerful thing but changing the configuration isn’t immediately visible to the beans that depend on it. Spring Cloud refresh scope, with **`@RefreshScope`** annotation, solve this problem: 
+
+- `@org.springframework.cloud.context.config.annotation.RefreshScope`
+
+- 💡 The `@RefreshScope` makes the bean refreshable. This annotation is a Spring Cloud-contributed scope that lets  any bean recreate itself in place, whenever a refresh event is triggered.
+- 💡Fundamentally, all the refresh-scoped beans will refresh themselves when they receive a Spring `ApplicationContext` event of the type `RefreshScopeRefreshEvent`.
+- 💡 There are various ways to trigger the refresh event. You can trigger the refresh by sending an empty:
+  `POST http://127.0.0.1:8080/actuator/refresh`, which is a Spring Boot Actuator endpoint that is exposed automatically.
+  `curl -H'Content-Type:application/json' -d{} http://localhost:8081/actuator/refresh`
+
+
+1. add the actuator dependencies
+
+```xml
+<dependency>
+  <groupId>org.springframework.boot</groupId>
+  <artifactId>spring-boot-starter-actuator</artifactId>
+</dependency>
+```
+
+```yaml
+## Actuator
+### $ curl localhost:8080/actuator/refresh -d {} -H "Content-Type: application/json"
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+```
