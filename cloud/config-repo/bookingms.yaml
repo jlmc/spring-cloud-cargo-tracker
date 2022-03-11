@@ -1,5 +1,5 @@
 booking:
-  message: MAMA MIA 123 sajs
+  message: Hello message from config server, Ola, Hello!
 
 
 ## Actuator
@@ -13,7 +13,6 @@ management:
         include: '*'
 
 spring:
-
   cloud:
     bus:
       enabled: true

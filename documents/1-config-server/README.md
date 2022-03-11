@@ -63,7 +63,7 @@ org.springframework.cloud:org.springframework.cloud
 
 - starting the config server, we are able to get the configuration of the configured application.
 ```shell
-curl http://127.0.0.1:8888/booking-ms/default | jq .
+curl http://127.0.0.1:8888/bookingms/default | jq .
 ```
 
 
@@ -91,7 +91,7 @@ curl http://127.0.0.1:8888/booking-ms/default | jq .
       The configuration server manages a directory full of *.properties files. Spring Cloud server configuration to connected clients by matching the client spring.application.name. Thus, a configuration client that identifies itself as foo-service would see the configuration in foo-service.properties.
 
 
-**2. create the bootstrap.yml file in your applications:**
+**2. create the `bootstrap.yml` file in your applications:**
 ```yaml
 server:
   port: 8081
@@ -125,9 +125,7 @@ Centralized configuration is a powerful thing but changing the configuration isn
   `POST http://127.0.0.1:8080/actuator/refresh`, which is a Spring Boot Actuator endpoint that is exposed automatically.
   `curl -H'Content-Type:application/json' -d{} http://localhost:8081/actuator/refresh`
 
-
-1. add the actuator dependencies
-
+1. In the downstream service we need to add and configure the actuator dependency:
 ```xml
 <dependency>
   <groupId>org.springframework.boot</groupId>
@@ -135,12 +133,144 @@ Centralized configuration is a powerful thing but changing the configuration isn
 </dependency>
 ```
 
+2. Enable the refresh actuator endpoint, in this example we are enabling all the endpoints, you can see all the endpoints in: http://localhost:8081/actuator.
+
+  - This configuration should be done in the application.properties file, not in the bootstrap.properties. so, we can configure this endpoint in the file of the configuration repository.
 ```yaml
 ## Actuator
 ### $ curl localhost:8080/actuator/refresh -d {} -H "Content-Type: application/json"
 management:
+  security:
+    enabled: false
   endpoints:
     web:
       exposure:
         include: '*'
 ```
+
+Now, if we execute the following request, all the beans annotated with `@RefreshScope` will be recreated using the updated configuration.
+```shell
+curl localhost:8080/actuator/refresh -d {} -H "Content-Type: application/json"
+```
+
+- By using Actuator, we can refresh clients. However, in the cloud environment, we would need to go to every single client and reload configuration by accessing actuator endpoint. To solve this problem, we can use Spring Cloud Bus.
+
+---
+
+### Configure with refresh using Spring Cloud Bus
+
+#### In configuration server
+
+```xml
+<ds>
+<dependency>
+  <groupId>org.springframework.cloud</groupId>
+  <artifactId>spring-cloud-config-monitor</artifactId>
+</dependency>
+<dependency>
+  <groupId>org.springframework.cloud</groupId>
+  <artifactId>spring-cloud-starter-stream-rabbit</artifactId>
+</dependency>
+</ds>
+```
+
+```yaml
+spring:
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+```
+
+The Spring Cloud Bus exposes a different Actuator endpoint, `/bus/refresh`, that will publish a message to the connected RabbitMQ broker that will trigger all connected nodes to refresh themselves. You can send the following message to any node with the spring-cloud-starter-bus-amqp autoconfiguration, and it'll trigger a refresh in all the connected nodes.
+
+```
+curl localhost:8081/bus/refresh -d {} -H "Content-Type: application/json"
+```
+
+#### in downstream services
+
+```xml
+<dep>
+    <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-starter-config</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-starter-bootstrap</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-actuator</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-actuator-autoconfigure</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-starter-bus-amqp</artifactId>
+    </dependency>
+</dep>
+```
+
+3. in the bootstrap.yaml file present in the downtime service.
+```yaml
+server:
+  port: 8081
+
+spring:
+  application:
+    name: bookingms
+  profiles:
+    active: default, dev
+
+  cloud:
+    config:
+      uri: http://localhost:8888
+      profile: default
+```
+
+3. In the application.yaml, present in the config repository:
+
+```yaml
+booking:
+  message: Hello message from config server Ya!!!
+
+## Actuator
+### $ curl localhost:8080/actuator/refresh -d {} -H "Content-Type: application/json"
+management:
+  security:
+    enabled: false
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+spring:
+  cloud:
+    bus:
+      enabled: true
+      refresh:
+        enabled: true
+
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+    
+# and all the other properties    
+```
+
+- 🚀  Having done this, the update 
+
+
+## References:
+
+- [https://spring.io/guides/gs/centralized-configuration/](https://spring.io/guides/gs/centralized-configuration/)
+- [https://spring.io/guides/gs/multi-module/](https://spring.io/guides/gs/multi-module/)
+- [https://www.baeldung.com/spring-cloud-bus](https://www.baeldung.com/spring-cloud-bus)
+- [https://github.com/eugenp/tutorials/tree/master/spring-cloud-bus](https://github.com/eugenp/tutorials/tree/master/spring-cloud-bus)

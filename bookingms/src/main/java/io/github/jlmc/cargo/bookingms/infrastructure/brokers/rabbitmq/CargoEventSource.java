@@ -1,7 +1,7 @@
 package io.github.jlmc.cargo.bookingms.infrastructure.brokers.rabbitmq;
 
-import org.springframework.cloud.stream.annotation.Output;
-import org.springframework.messaging.MessageChannel;
+//import org.springframework.cloud.stream.annotation.Output;
+//import org.springframework.messaging.MessageChannel;
 
 /**
  * Interface depicting all output channels
@@ -9,9 +9,9 @@ import org.springframework.messaging.MessageChannel;
 public interface CargoEventSource {
 
 
-    @Output("cargoBookingChannel")
+/*    @Output("cargoBookingChannel")
     MessageChannel cargoBooking();
 
     @Output("cargoRoutingChannel")
-    MessageChannel cargoRouting();
+    MessageChannel cargoRouting();*/
 }

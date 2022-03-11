@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: booking-ms
+    name: bookingms
   profiles:
     active: default, dev
 
@@ -11,11 +11,26 @@ spring:
     config:
       uri: http://localhost:8888
       profile: default
+#    bus:
+#      enabled: true
+#      refresh:
+#        enabled: true
+
+#  rabbitmq:
+#    host: localhost
+#    port: 5672
+#    username: guest
+#    password: guest
+
 
 ## Actuator
 ### $ curl localhost:8080/actuator/refresh -d {} -H "Content-Type: application/json"
-management:
-  endpoints:
-    web:
-      exposure:
-        include: '*'
+#management:
+#  endpoints:
+#    web:
+#      exposure:
+#        include: '*'
+#
+#
+#  security:
+#    enabled: false
