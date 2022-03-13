@@ -2,7 +2,6 @@ server:
   port: 8081
 
 
-#
 #spring.rabbitmq.host=localhost
 #spring.rabbitmq.port=5672
 #spring.rabbitmq.username=guest
@@ -21,6 +20,12 @@ spring:
           destination: cargoRoutings
       default:
         contentType: application/json
+    config:
+      enabled: true
+      uri: http://127.0.0.1:8888
+  config:
+    import: optional:configserver:http://127.0.0.1:8888
+
 
 
   application:

@@ -15,11 +15,6 @@ public class CargoBookedEventHandler {
     @StreamListener(target = CargoEventInput.BOOKINGS)
     public void receiveEvent(CargoBookedEvent cargoBookedEvent) {
         //Process the Event
-
-        System.out.println("Booked: ---> " + cargoBookedEvent);
-
-        if (true) throw new IllegalArgumentException("Some thing wrong!!!");
-
         System.out.println("Booked: ---> " + cargoBookedEvent);
     }
 }
