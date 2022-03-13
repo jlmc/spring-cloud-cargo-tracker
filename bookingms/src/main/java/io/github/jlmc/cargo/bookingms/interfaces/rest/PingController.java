@@ -57,6 +57,6 @@ public class PingController {
     @EventListener
     public void refreshListener(RefreshScopeRefreshedEvent event) {
         // NOTE: this method is not required.
-        LOGGER.info("The refresh count is now at <{}>", this.COUNTER.incrementAndGet());
+        LOGGER.info("The refresh count is now at <{}>", COUNTER.incrementAndGet());
     }
 }

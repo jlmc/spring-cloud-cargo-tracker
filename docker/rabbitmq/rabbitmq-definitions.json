@@ -48,6 +48,24 @@
             "arguments": {
                 "x-queue-type": "classic"
             }
+        },
+        {
+            "name": "cargoBookings.cargoBookingsQueue",
+            "vhost": "/",
+            "durable": true,
+            "auto_delete": false,
+            "arguments": {
+                "x-queue-type": "classic"
+            }
+        },
+        {
+            "name": "cargoRoutings.cargoRoutingsQueue",
+            "vhost": "/",
+            "durable": true,
+            "auto_delete": false,
+            "arguments": {
+                "x-queue-type": "classic"
+            }
         }
     ],
     "exchanges": [
@@ -59,7 +77,26 @@
             "auto_delete": false,
             "internal": false,
             "arguments": {}
+        },
+        {
+            "name": "cargoBookingChannel",
+            "vhost": "/",
+            "type": "topic",
+            "durable": true,
+            "auto_delete": false,
+            "internal": false,
+            "arguments": {}
+        },
+        {
+           "name": "cargoRoutingChannel",
+            "vhost": "/",
+            "type": "topic",
+            "durable": true,
+            "auto_delete": false,
+            "internal": false,
+            "arguments": {}
         }
+
     ],
     "bindings": [
         {
@@ -68,6 +105,22 @@
             "destination": "audit.logging",
             "destination_type": "queue",
             "routing_key": "auditor.audits",
+            "arguments": {}
+        },
+        {
+            "source": "cargoBookingChannel",
+            "vhost": "/",
+            "destination": "cargoBookings.cargoBookingsQueue",
+            "destination_type": "queue",
+            "routing_key": "#",
+            "arguments": {}
+        },
+        {
+            "source": "cargoRoutingChannel",
+            "vhost": "/",
+            "destination": "cargoRoutings.cargoRoutingsQueue",
+            "destination_type": "queue",
+            "routing_key": "#",
             "arguments": {}
         }
     ]
