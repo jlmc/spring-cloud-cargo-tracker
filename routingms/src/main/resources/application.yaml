@@ -3,6 +3,29 @@ server:
 
 spring:
   application:
-    name: routing-ms
+    name: routingms
   profiles:
     active: default, dev
+
+
+## Service Discovery
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://127.0.0.1:8761/eureka
+
+    healthcheck:
+      enabled: true
+
+
+## Actuator
+### $ curl localhost:8082/actuator/health -d {} -H "Content-Type: application/json"
+management:
+  security:
+    enabled: false
+  endpoints:
+    web:
+      exposure:
+        include: '*'

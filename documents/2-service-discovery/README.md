@@ -66,7 +66,7 @@ eureka:
     enable-self-preservation: false
 ```
 
-Some considerations:
+### Some considerations:
 
 - `eureka.client.register-with-eureka=false` and `eureka.client.fetch-registry=false`
   - We don’t want Eureka to try to register with itself.
@@ -74,11 +74,60 @@ Some considerations:
 - `eureka.server.enable-self-preservation=false`
   - If a significant portion of the registered instances stops delivering heartbeats within a time span, Eureka assumes the issue is due to the network and does not de-register the services that are not responding. This is Eureka’s self-preservation mode. Leaving this set to true is probably a good idea, but it also means that if you have a small set of instances (as you will if you are trying these examples with a few nodes on a local machine) then you won't see the expected behavior when instances de-register.
 
-4. We are ready to go, you can startup the applications, we can see some useful information in the Eureka server website: 
+4. We are ready to go, you can start up the applications, we can see some useful information in the Eureka server website: 
   - `http://localhost:8761/lastn`
 
 5. We can also see the applications already registered on the Service discovery:
 
 ```shell
 curl -L -m 500 -X GET http://localhost:8761/eureka/apps
+```
+
+
+## Apply Service Discovery client in the downstream services
+
+1. add dependencies
+```xml
+<!-- Cloud Service Discovery -->
+<dependency>
+  <groupId>org.springframework.cloud</groupId>
+  <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+</dependency>
+```
+
+2. configure the eureka client properties
+
+```yaml
+## Service Discovery
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://127.0.0.1:8761/eureka
+```
+
+3. active the Eureka client
+```
+@org.springframework.cloud.client.discovery.EnableDiscoveryClient
+```
+
+4. teach spring rest template how to discovery the service name instead of using the `host:post`:
+
+```java
+import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.client.RestTemplate;
+
+@Configuration
+public class RestTemplateConfig {
+
+    @Bean
+    @LoadBalanced
+    public RestTemplate restTemplate(RestTemplateBuilder restTemplateBuilder) {
+        return restTemplateBuilder.build();
+    }
+}
 ```
