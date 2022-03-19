@@ -1,6 +1,25 @@
 server:
   port: 8081
 
+## Actuator
+### $ curl localhost:8080/actuator/refresh -d {} -H "Content-Type: application/json"
+management:
+  security:
+    enabled: false
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+## Service Discovery
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://127.0.0.1:8761/eureka
+    healthcheck:
+      enabled: true
 
 #spring.rabbitmq.host=localhost
 #spring.rabbitmq.port=5672
@@ -10,6 +29,7 @@ server:
 #spring.cloud.stream.bindings.cargoRoutingChannel.destination=cargoRoutings
 
 spring:
+
 
   cloud:
     stream:

@@ -95,8 +95,15 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-bus-amqp</artifactId>
         </dependency>
-
         <!-- / Config server -->
+
+
+        <!-- Service register-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+        </dependency>
+        <!-- / Service register-->
 
         <!-- Event Bus -->
         <!-- / Event Bus -->
