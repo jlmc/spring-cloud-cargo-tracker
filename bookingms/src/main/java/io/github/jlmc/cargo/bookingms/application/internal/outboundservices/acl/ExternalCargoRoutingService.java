@@ -5,12 +5,27 @@ import io.github.jlmc.cargo.bookingms.domain.model.valueobjects.Leg;
 import io.github.jlmc.cargo.bookingms.domain.model.valueobjects.RouteSpecification;
 import io.github.jlmc.cargo.bookingms.shareddomain.TransitEdge;
 import io.github.jlmc.cargo.bookingms.shareddomain.TransitPath;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @Service
 public class ExternalCargoRoutingService {
+
+    //@formatter:off
+    private static final Logger LOGGER = LoggerFactory.getLogger(ExternalCargoRoutingService.class);
+    private static final String ROUTING = "http://localhost:8082/routing";
+    private static final String ROUTING_MS = "http://routingms/routing";
+    //@formatter:on
+
+    private final RestTemplate restTemplate;
+
+    public ExternalCargoRoutingService(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
+    }
+
     public CargoItinerary fetchRouteForSpecification(RouteSpecification routeSpecification) {
         TransitPath transitPath = fetchTransitPath(routeSpecification);
 
@@ -37,18 +52,19 @@ public class ExternalCargoRoutingService {
     }
 
     private TransitPath fetchTransitPath(RouteSpecification routeSpecification) {
-        RestTemplate restTemplate = new RestTemplate();
 
         String uri =
-                UriComponentsBuilder.fromUriString("http://localhost:8082/routing")
-                                       .queryParam("origin", routeSpecification.getOrigin().getUnLocCode())
-                                       .queryParam("destination", routeSpecification.getDestination().getUnLocCode())
-                                       .queryParam("deadline", routeSpecification.getArrivalDeadline().toString()).build()
-                                       .toUriString();
+                UriComponentsBuilder.fromUriString(ROUTING_MS)
+                                    .queryParam("origin", routeSpecification.getOrigin().getUnLocCode())
+                                    .queryParam("destination", routeSpecification.getDestination().getUnLocCode())
+                                    .queryParam("deadline", routeSpecification.getArrivalDeadline().toString()).build()
+                                    .toUriString();
+
+        LOGGER.info("Fetch Transit Path: <{}>", uri);
 
         TransitPath transitPath =
                 //restTemplate.getForObject("<<ROUTING_SERVICE_URL>>/cargorouting/",
-                restTemplate.getForObject(uri, TransitPath.class);
+                this.restTemplate.getForObject(uri, TransitPath.class);
 
         return transitPath;
     }
