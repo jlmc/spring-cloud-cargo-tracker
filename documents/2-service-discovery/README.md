@@ -15,6 +15,24 @@ Spring Cloud provides the DiscoverClient abstraction to make it easy for clients
 While Netflix Eureka can be configured to do virtually anything, you shouldn’t undertake the work lightly. There’s a lot of value in having proven recipes for security, scale, and redundancy, such as what you get when using spring cloud service-based Netflix installation on Pivotal Cloud Foundry or Pivotal Web Services.
 
 
+---
+## Problem 
+
+The problem we have is that our services are too coupled.
+All of them have to know each other, so that communication between them is possible.
+
+```
+RestTemplate restTemplate = new RestTemplate();
+
+private static final String ROUTING = "http://localhost:8082/routing";
+```
+
+```
+private static final String ROUTING_MS = "http://routingms/routing";
+```
+
+
+
 ## Configuring Eureka server
 
 1. In Order to set up a Eureka service registry, you will need the dependency, `org.springframework.cloud:spring-cloud-starter-netflix-eureka-server`, in a spring boot project.
@@ -131,3 +149,7 @@ public class RestTemplateConfig {
     }
 }
 ```
+
+## Deploy on cloud-foundry
+
+- https://cloud.spring.io/spring-cloud-netflix/reference/html/#using-eureka-on-cloud-foundry
