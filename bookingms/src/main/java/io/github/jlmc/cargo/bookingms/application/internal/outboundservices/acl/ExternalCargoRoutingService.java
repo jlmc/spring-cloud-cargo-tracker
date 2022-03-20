@@ -1,5 +1,6 @@
 package io.github.jlmc.cargo.bookingms.application.internal.outboundservices.acl;
 
+import io.github.jlmc.cargo.bookingms.application.internal.outboundservices.acl.gw.CargoRoutingOpenfeign;
 import io.github.jlmc.cargo.bookingms.application.internal.outboundservices.acl.gw.CargoRoutingWithRestTemplate;
 import io.github.jlmc.cargo.bookingms.application.internal.outboundservices.acl.gw.CargoRoutingWithWebClient;
 import io.github.jlmc.cargo.bookingms.domain.model.valueobjects.CargoItinerary;
@@ -14,16 +15,27 @@ public class ExternalCargoRoutingService {
 
     private final CargoRoutingWithRestTemplate restClint;
     private final CargoRoutingWithWebClient webClient;
+    private final CargoRoutingOpenfeign cargoRoutingOpenfeign;
 
-    public ExternalCargoRoutingService(CargoRoutingWithRestTemplate restClint, CargoRoutingWithWebClient webClient) {
+    public ExternalCargoRoutingService(CargoRoutingWithRestTemplate restClint,
+                                       CargoRoutingWithWebClient webClient,
+                                       CargoRoutingOpenfeign cargoRoutingOpenfeign) {
         this.restClint = restClint;
         this.webClient = webClient;
+        this.cargoRoutingOpenfeign = cargoRoutingOpenfeign;
     }
 
     public CargoItinerary fetchRouteForSpecification(RouteSpecification routeSpecification) {
         //TransitPath transitPath = restClint.findOptimalRoute(routeSpecification);
+        //TransitPath transitPath = webClient.findOptimalRoute(routeSpecification);
 
-        TransitPath transitPath = webClient.findOptimalRoute(routeSpecification);
+
+        TransitPath transitPath =
+                cargoRoutingOpenfeign.findOptimalRoute(
+                routeSpecification.getOrigin().getUnLocCode(),
+                        routeSpecification.getDestination().getUnLocCode(),
+                        routeSpecification.getArrivalDeadline().toString()
+                        );
 
         var legs =
                 transitPath.getTransitEdges()
