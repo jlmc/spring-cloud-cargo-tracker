@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 
 @FeignClient(
-        value = "routingms",
+        name = "api-gateway", // application-name of the api-gateway, value = "routingms",
         contextId="routingmsOpenfeign",
        // configuration = FeignClientConfig.class,
         decode404 = true)
@@ -17,7 +17,7 @@ public interface CargoRoutingOpenfeign {
 
     //private static final String ROUTING_MS = "http://routingms/routing";
 
-    @GetMapping(path = "routing", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/routingms/routing", produces = MediaType.APPLICATION_JSON_VALUE)
     TransitPath findOptimalRoute(
             @RequestParam(value = "origin", required = false) String originUnLocode,
             @RequestParam(value = "destination", required = false) String destinationUnLocode,

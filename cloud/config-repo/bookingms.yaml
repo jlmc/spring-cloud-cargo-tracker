@@ -2,6 +2,18 @@ booking:
   message: Hello message from config server, Ola, Hello!
 
 
+## feign client
+#  feign.client.config.default.loggerLevel: full
+#  feign.client.config.loggerLevel=FULL
+#  feign.client.config.connectTimeout=5000
+#  feign.client.config.followRedirects=true
+#  feign.client.config.decodeSlash=true
+feign:
+  client:
+    config:
+      default:
+        loggerLevel: full
+
 ## Actuator
 ### $ curl localhost:8080/actuator/refresh -d {} -H "Content-Type: application/json"
 management:
@@ -65,7 +77,7 @@ spring:
     properties:
       hibernate:
         format_sql: true
-        generate_statistics: true
+        generate_statistics: false
         dialect: org.hibernate.dialect.PostgreSQL10Dialect
         connection:
           provider_disables_autocommit: true # this is a way to improve the performance of the application, # this way the hibernate knows that the connections are already autocommit = false (default value for this property is false)
@@ -79,11 +91,11 @@ logging:
   level:
     root: INFO
     org:
-      # hibernate: ERROR
-      hibernate: INFO
-      hibernate.SQL: DEBUG
-      hibernate.type.descriptor.sql: TRACE
-      hibernate.stat: DEBUG
-      hibernate.cache: DEBUG
-      hibernate.engine.transaction.internal.TransactionImpl: DEBUG
-      hibernate.engine.jdbc.batch: DEBUG
+      hibernate: ERROR
+#      hibernate: INFO
+#      hibernate.SQL: DEBUG
+#      hibernate.type.descriptor.sql: TRACE
+#      hibernate.stat: DEBUG
+#      hibernate.cache: DEBUG
+#      hibernate.engine.transaction.internal.TransactionImpl: DEBUG
+#      hibernate.engine.jdbc.batch: DEBUG
