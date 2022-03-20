@@ -127,6 +127,12 @@
         <!-- / web flux starter only to use webClient-->
 
 
+        <!-- Sleuth with Brave tracer implementation -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-sleuth</artifactId>
+        </dependency>
+        <!-- / Sleuth with Brave tracer implementation -->
 
 
         <!-- tests -->

@@ -92,6 +92,10 @@ logging:
     root: INFO
     org:
       hibernate: ERROR
+      springframework:
+        web:
+          servlet:
+            DispatcherServlet: DEBUG
 #      hibernate: INFO
 #      hibernate.SQL: DEBUG
 #      hibernate.type.descriptor.sql: TRACE

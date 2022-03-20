@@ -19,6 +19,13 @@
     </properties>
     <dependencies>
 
+        <!-- Sleuth with Brave tracer implementation -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-sleuth</artifactId>
+        </dependency>
+        <!-- / Sleuth with Brave tracer implementation -->
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-webflux</artifactId>
