@@ -5,12 +5,30 @@ spring:
   application:
     name: api-gateway
 
+  # Spring cloud configurations for API Gateway
   cloud:
     gateway:
       discovery:
         locator:
           enabled: true
           lower-case-service-id: true
+
+      # CORS
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            # allowedOrigins: "https://www.javarubberduck.com"
+            allowedOrigins: "*"
+            allowedHeaders:
+              - content-type
+            allowedMethods:
+              - GET
+              - POST
+              - DELETE
+              - PUT
+              - PATCH
+              - HEAD
+
 
 
 logging:

@@ -187,7 +187,31 @@ public interface DeliveryClient {
 curl -L -m 500 -X GET -H'Authorization: xxx'  'localhost:9090/shop-service/v1/orders/1' | jq .
 ```
 
+## Cross-Origin Resource Sharing (CORS)
 
+-About [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS)
+
+- [Spring api gateway CORS configuration](https://docs.spring.io/spring-cloud-gateway/docs/current/reference/html/#cors-configuration)
+
+```yaml
+spring:
+  cloud:
+    gateway:
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            # allowedOrigins: "https://www.javarubberduck.com"
+            allowedOrigins: "*"
+            allowedHeaders:
+              - content-type
+            allowedMethods:
+              - GET
+              - POST
+              - DELETE
+              - PUT
+              - PATCH
+              - HEAD
+```
 
 ## Anexos
 
