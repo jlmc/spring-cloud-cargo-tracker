@@ -213,6 +213,18 @@ spring:
               - HEAD
 ```
 
+## HTTP Forwarding headers
+
+The api gateway forward the request headers to the downstream services:
+
+```
+curl -L -i -m 500 -H'Authorization: GOAT' -H'X-SYS: x1'  -X POST 'localhost:9090/bookingms/booking/ef622f7a/route'
+```
+
+Check the loggers in `bookingms`.
+
+
+---
 ## Anexos
 
 ### pom.xml
