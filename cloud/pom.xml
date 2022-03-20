@@ -12,6 +12,7 @@
     <modules>
         <module>config-server</module>
         <module>service-registry</module>
+        <module>api-gateway</module>
     </modules>
 
     <properties>

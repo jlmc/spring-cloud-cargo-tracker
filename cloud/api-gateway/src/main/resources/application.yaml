@@ -1,0 +1,40 @@
+server:
+  port: 9090
+
+spring:
+  application:
+    name: api-gateway
+
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+
+
+
+## Service Discovery - Eureka
+eureka:
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://127.0.0.1:8761/eureka
+  instance:
+    # what distinct ID do we want for each registered service, we can override the default attribution
+    # instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+    # instance-id: ${spring.cloud.client.hostname}:${spring.application.name}:${spring.application.instance_id:${server.port}}}
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${server.port}}:${random.value}
+    lease-renewal-interval-in-seconds: 30
+
+
+## Actuator
+### $ curl localhost:8080/actuator/refresh -d {} -H "Content-Type: application/json"
+management:
+  security:
+    enabled: false
+  endpoints:
+    web:
+      exposure:
+        include: '*'
