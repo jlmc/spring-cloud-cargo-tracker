@@ -5,6 +5,13 @@ spring:
   application:
     name: api-gateway
 
+  zipkin:
+    base-url: "http://localhost:9411/"
+
+  sleuth:
+    reactor:
+      instrumentation-type: decorate_on_each
+
   # Spring cloud configurations for API Gateway
   cloud:
     gateway:

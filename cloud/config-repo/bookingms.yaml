@@ -36,6 +36,10 @@ eureka:
 
 
 spring:
+
+  zipkin:
+    base-url: "http://localhost:9411/"
+
   cloud:
     bus:
       enabled: true
