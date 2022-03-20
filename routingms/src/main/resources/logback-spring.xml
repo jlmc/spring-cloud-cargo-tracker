@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <!--
+    Include/import spring boot default settings (console) if this is not included, nothing will be logged into the console by default.
+    -->
+    <include resource="org/springframework/boot/logging/logback/base.xml"/>
+
+    <!--
+    Just use the cloud logger when in production, if we want it to be always, we don't need to declare/embed the configuration inside springProfile tag
+    -->
+    <!-- springProfile name="production" -->
+
+        <springProperty name="application_name" source="spring.application.name"/>
+
+        <appender name="PAPERTRAIL" class="ch.qos.logback.classic.net.SyslogAppender">
+            <syslogHost>logs.papertrailapp.com</syslogHost>
+            <port>44929</port>
+            <facility>USER</facility>
+            <!--suffixPattern>warehouse-service: %logger %msg</suffixPattern -->
+            <suffixPattern>${application_name}: %clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}</suffixPattern>
+        </appender>
+
+        <!-- Make logger log asynchronous, wrapper around logger back -->
+        <appender name="papertrailAsync" class="ch.qos.logback.classic.AsyncAppender">
+            <appender-ref ref="PAPERTRAIL"/>
+        </appender>
+
+        <root level="info">
+            <appender-ref ref="papertrailAsync"/>
+        </root>
+
+    <!-- /springProfile -->
+
+</configuration>

@@ -177,3 +177,90 @@ http://localhost:9411/
 ---
 
 ## Centralized Log with PAPERTRAILAPP
+
+ - [https://papertrailapp.com](https://papertrailapp.com/systems/setup?type=system&platform=unix)
+
+🚀 Features:
+- The free account allows us:
+- search in the logs
+- store logs over the last 7 days
+- 
+- https://papertrailapp.com/dashboard
+- <MY-USERNAME> / G59tXLx#XppWXjDu1
+
+
+To configure the papertrailapp [with spring boot logback:](https://www.papertrail.com/help/java-logback-logging/)
+
+
+1. Add a papertrailapp subsystem, in papertrailapp website:
+```
+Your logs will go to logs.papertrailapp.com:44929 and appear in Events.
+
+wget -qO - --header="X-Papertrail-Token: zT3ZBcZszZXfm3rChLPV" \
+https://papertrailapp.com/destinations/28722161/setup.sh | sudo bash
+```
+
+2. add configuration, in the logback-spring.xml file:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!--
+    Include/import spring boot default settings (console) if this is not included, nothing will be logged into the console by default.
+    -->
+    <include resource="org/springframework/boot/logging/logback/base.xml"/>
+
+    <!--
+    Just use the cloud logger when in production, if we want it to be always, we don't need to declare/embed the configuration inside springProfile tag
+    -->
+    <springProfile name="production">
+
+        <springProperty name="application_name" source="spring.application.name"/>
+
+        <appender name="PAPERTRAIL" class="ch.qos.logback.classic.net.SyslogAppender">
+            <syslogHost>logs.papertrailapp.com</syslogHost>
+            <port>44929</port>
+            <facility>USER</facility>
+            <!--suffixPattern>warehouse-service: %logger %msg</suffixPattern -->
+            <suffixPattern>${application_name}: %clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}</suffixPattern>
+        </appender>
+
+        <!-- Make logger log asynchronous, wrapper around logger back -->
+        <appender name="papertrailAsync" class="ch.qos.logback.classic.AsyncAppender">
+            <appender-ref ref="PAPERTRAIL"/>
+        </appender>
+
+        <root level="info">
+            <appender-ref ref="papertrailAsync"/>
+        </root>
+
+    </springProfile>
+</configuration>
+```
+
+3. Perform some request.
+
+```shell
+curl -L -m 500 -X POST 'localhost:9090/bookingms/booking' \
+-H 'Content-Type: application/json' \
+--data-raw '{
+"bookingAmount": 12,
+"originLocation": "ABC",
+"destLocation": "DEF",
+"destArrivalDeadline": "2022-04-01T21:23:43.598697Z"
+}' | jq .
+```
+
+
+```shell
+curl -L -i -m 500 -H'Authorization: GOAT' -H'X-SYS: x1' -X POST 'localhost:9090/bookingms/booking/ef622f7a/route'
+```
+
+4. Check the centralized logger system 
+
+```
+https://my.papertrailapp.com/events?q=<YOUR-REQUEST-TRACE-ID>
+```
+
+- in the papertrail, all the loggers that grouped in a single result, so we can see follow the flow all the entire transaction:
+- Note that the `trace id` is unique for the entire transaction, and the `span id` is unique for each microservice.
