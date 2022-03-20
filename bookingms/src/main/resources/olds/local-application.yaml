@@ -49,7 +49,7 @@ spring:
 
 
   application:
-    name: booking-ms
+    name: bookingms
   profiles:
     active: default, dev
 

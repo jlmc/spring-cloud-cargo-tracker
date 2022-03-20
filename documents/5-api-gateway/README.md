@@ -4,7 +4,7 @@
 
 🚀 [CORDS](https://javarubberduck.com/java/cors-gateway/)
 
-Since some time now, the spring team has stopped supporting **Netflix Zull**, this project has been replaced in spring-cloud framework by the new spring-api-gateway implementation.
+Since some time now, the spring team has stopped supporting **Netflix Zuul**, this project has been replaced in spring-cloud framework by the new spring-api-gateway implementation.
 Earlier Spring was providing Zuul API Gateway, but now it is being deprecated and Spring Cloud API Gateway is being used.
 
 Basically the both project provide the same features.
@@ -62,9 +62,9 @@ spring:
 @EnableEurekaClient
 
 @SpringBootApplication
-public class CloudApiGatewayApplication {
+public class ApiGatewayApplication {
     public static void main(String[] args) {
-        SpringApplication.run(CloudApiGatewayApplication.class, args);
+        SpringApplication.run(ApiGatewayApplication.class, args);
     }
 }
 ```
@@ -119,7 +119,7 @@ java -jar shop/target/shop-0.0.1-SNAPSHOT.jar
 java -jar cloud-api-gateway/target/cloud-api-gateway-0.0.1-SNAPSHOT.jar
 ```
 
-Now instead o call directly the downstream microservices we can call the the api-gateway, for example:
+Now instead o call directly the downstream microservices we can call the api-gateway, for example:
 
 ```shell
 curl -L -m 500 -X POST 'localhost:9090/shop-service/v1/orders' \
