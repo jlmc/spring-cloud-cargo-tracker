@@ -13,6 +13,14 @@ spring:
           lower-case-service-id: true
 
 
+logging:
+  level:
+    reactor:
+      netty: INFO
+    org:
+      springframework:
+        cloud:
+          gateway: TRACE
 
 ## Service Discovery - Eureka
 eureka:
