@@ -1,33 +1,29 @@
 package io.github.jlmc.cargo.bookingms.application.internal.outboundservices.acl;
 
+import io.github.jlmc.cargo.bookingms.application.internal.outboundservices.acl.gw.CargoRoutingWithRestTemplate;
+import io.github.jlmc.cargo.bookingms.application.internal.outboundservices.acl.gw.CargoRoutingWithWebClient;
 import io.github.jlmc.cargo.bookingms.domain.model.valueobjects.CargoItinerary;
 import io.github.jlmc.cargo.bookingms.domain.model.valueobjects.Leg;
 import io.github.jlmc.cargo.bookingms.domain.model.valueobjects.RouteSpecification;
 import io.github.jlmc.cargo.bookingms.shareddomain.TransitEdge;
 import io.github.jlmc.cargo.bookingms.shareddomain.TransitPath;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
 
 @Service
 public class ExternalCargoRoutingService {
 
-    //@formatter:off
-    private static final Logger LOGGER = LoggerFactory.getLogger(ExternalCargoRoutingService.class);
-    private static final String ROUTING = "http://localhost:8082/routing";
-    private static final String ROUTING_MS = "http://routingms/routing";
-    //@formatter:on
+    private final CargoRoutingWithRestTemplate restClint;
+    private final CargoRoutingWithWebClient webClient;
 
-    private final RestTemplate restTemplate;
-
-    public ExternalCargoRoutingService(RestTemplate restTemplate) {
-        this.restTemplate = restTemplate;
+    public ExternalCargoRoutingService(CargoRoutingWithRestTemplate restClint, CargoRoutingWithWebClient webClient) {
+        this.restClint = restClint;
+        this.webClient = webClient;
     }
 
     public CargoItinerary fetchRouteForSpecification(RouteSpecification routeSpecification) {
-        TransitPath transitPath = fetchTransitPath(routeSpecification);
+        //TransitPath transitPath = restClint.findOptimalRoute(routeSpecification);
+
+        TransitPath transitPath = webClient.findOptimalRoute(routeSpecification);
 
         var legs =
                 transitPath.getTransitEdges()
@@ -49,23 +45,5 @@ public class ExternalCargoRoutingService {
                 edge.getToUnLocode(),
                 edge.getFromDate(),
                 edge.getToDate());
-    }
-
-    private TransitPath fetchTransitPath(RouteSpecification routeSpecification) {
-
-        String uri =
-                UriComponentsBuilder.fromUriString(ROUTING_MS)
-                                    .queryParam("origin", routeSpecification.getOrigin().getUnLocCode())
-                                    .queryParam("destination", routeSpecification.getDestination().getUnLocCode())
-                                    .queryParam("deadline", routeSpecification.getArrivalDeadline().toString()).build()
-                                    .toUriString();
-
-        LOGGER.info("Fetch Transit Path: <{}>", uri);
-
-        TransitPath transitPath =
-                //restTemplate.getForObject("<<ROUTING_SERVICE_URL>>/cargorouting/",
-                this.restTemplate.getForObject(uri, TransitPath.class);
-
-        return transitPath;
     }
 }
