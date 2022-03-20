@@ -64,3 +64,9 @@ management:
     web:
       exposure:
         include: '*'
+    gateway:
+      enabled: true # default value
+
+
+## management.endpoint.gateway.enabled=true # default value
+## management.endpoints.web.exposure.include=gateway
