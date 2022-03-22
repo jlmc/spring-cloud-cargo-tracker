@@ -11,6 +11,8 @@ spring:
     config:
       uri: http://localhost:8888
       profile: default
+#      label: prod
+
 #    bus:
 #      enabled: true
 #      refresh:

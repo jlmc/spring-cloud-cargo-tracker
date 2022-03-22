@@ -274,3 +274,5 @@ spring:
 - [https://spring.io/guides/gs/multi-module/](https://spring.io/guides/gs/multi-module/)
 - [https://www.baeldung.com/spring-cloud-bus](https://www.baeldung.com/spring-cloud-bus)
 - [https://github.com/eugenp/tutorials/tree/master/spring-cloud-bus](https://github.com/eugenp/tutorials/tree/master/spring-cloud-bus)
+- [https://www.baeldung.com/spring-cloud-bootstrapping](https://www.baeldung.com/spring-cloud-bootstrapping)
+- [https://www.baeldung.com/spring-cloud-configuration](https://www.baeldung.com/spring-cloud-configuration)
