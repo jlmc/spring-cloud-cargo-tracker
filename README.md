@@ -52,3 +52,8 @@ curl -L -m 500 -X GET 'localhost:8081/booking/c5016ff0' | jq .
 ```shell
 curl -L -m 500 -X POST 'localhost:8081/booking/c5016ff0/route' | jq .
 ```
+
+
+## Presentation
+
+- https://docs.google.com/presentation/d/1iyRaIIBAbdKFpFKbG1igTN78z19B1Dsn9af0hUVl7Co/edit#slide=id.g11e8f9b583c_0_1599

@@ -1,25 +1,9 @@
 server:
   port: 8888
 
-## Native configuration, to file system
-# spring:
-#   profiles:
-#     active: native, local # https://cloud.spring.io/spring-cloud-config/reference/html/#_file_system_backend
-#   cloud:
-#     config:
-#       server:
-#         native:
-#           search-locations: file://${user.home}/Documents/junks/projects/spring/cloud/shopdesk-cloud-foundations/cloud-config-server/configs
-
-##  GitHub configuration
-
 spring:
-
   application:
     name: configserver
-#  profiles:
-#    active: prod
-
 
   cloud:
     config:
@@ -38,15 +22,3 @@ spring:
     port: 5672
     username: guest
     password: guest
-
-# $ curl http://127.0.0.1:8888/{application-name}/{profile}
-
-# curl http://127.0.0.1:8888/warehouse-service/{profile}
-
-# http://127.0.0.1:8888/SERVICE/master
-
-
-# bookingms
-#  curl http://127.0.0.1:8888/bookingms/prod
-
-# curl http://127.0.0.1:8888/warehouse-service/default

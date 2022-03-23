@@ -93,6 +93,18 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <!--
+        io.github.resilience4j:resilience4j-spring-boot2:1.70 [or last]
+        org.springframework.boot:spring-boot-starter-aop
+        org.springframework.boot:spring-boot-starter-actuator
+        -->
+
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-circuitbreaker-resilience4j</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>
