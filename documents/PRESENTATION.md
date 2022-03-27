@@ -42,3 +42,5 @@ curl -L -m 500 -X GET 'localhost:8081/booking/c5016ff0' | jq .
 ## Agenda
 
 - [Configuration Server](1-config-server/PRESENTATION.md)
+
+- [Service Discovery]

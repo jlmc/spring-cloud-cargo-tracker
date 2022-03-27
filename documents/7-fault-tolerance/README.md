@@ -108,3 +108,7 @@ resilience4j:
 # management.endpoint.health.show-details = always
 ## open: down, closed: up, half-open: unknown
 ```
+
+
+https://github.com/resilience4j/resilience4j/issues/568
+https://www.youtube.com/watch?v=LnOK32zvxVg
