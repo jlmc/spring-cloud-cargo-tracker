@@ -161,7 +161,7 @@ public interface DeliveryClient {
 }
 ```
 
-2. you must change the configuration to use the api-gateway, the previews implementation must change to the following:
+2. you must change the configuration to use the api-gateway, the previews' implementation must change to the following:
 
 ```java
 @FeignClient(
