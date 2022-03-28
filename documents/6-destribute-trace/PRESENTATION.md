@@ -1,24 +1,14 @@
 # Distribute Tracing/log
 
-- https://petabridge.com/blog/why-use-distributed-tracing/
-
 When we work with microservice by default any microservice store each log files. So we could have a requisition passing in multiple microservices, but we are not able to trace the flow between the microservices.
-
 
 - Logs reflect a process's rhythm, its activity.
 - Logging requires intrusive statements be added to the code, but the resulting logfiles themselves are one of the most decouple tools out there. There are entire ecosystems, tools, languages, and big data platforms that have developed entirely around usefully mining data from logs.
 
-### You undertake two decisions when logging:
-
-- log output
-    - when do you what the output to appear? In a file? On the console? In a SyslogD service?
-- log Levels
-    - what granularity of output do you want? Do you want every little hiccup to be printed out, or just the things that may threaten the world?
-
 
 ## Spring Cloud Sleuth
 
-Spring Cloud Sleuth provides Spring Boot auto-configuration for distributed tracing.
+Spring Cloud Sleuth provides Spring Boot autoconfiguration for distributed tracing.
 
 Spring Cloud Sleuth provides API for distributed tracing solution for [Spring Cloud](https://cloud.spring.io/). It integrates with [OpenZipkin Brave](https://github.com/openzipkin/brave)
 
@@ -37,7 +27,7 @@ Spring Cloud Sleuth is able to trace your requests and messages so that you can 
   - If `spring-cloud-sleuth-zipkin` is available then the app will generate and report Zipkin-compatible traces via HTTP. By default, it sends them to a Zipkin collector service on localhost (port 9411). Configure the location of the service using spring.zipkin.baseUrl.
 
 
-🚀 Necessary Dependency:
+#### 🚀 Necessary Dependency:
 
 ```xml
 <dependency>
@@ -127,7 +117,7 @@ There are other similar alternative, for example, Microprofile open trace specif
 ### How to install, Zipkin Server
 
 1. Start the services
-```
+```shell
 docker-compose up rabbitmq postgres zipkin -d
 ```
 2. Add the necessary dependency to the projects:

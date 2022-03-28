@@ -14,7 +14,6 @@ spring:
           default-label: master # branch name, it could be useful to have multiple environments, DEV, QA, PROD...
           username: costajlmpp@gmail.com
           # password: <you dev token>
-          password: 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
           refresh-rate: 1
 
   rabbitmq:
