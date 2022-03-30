@@ -11,28 +11,3 @@ spring:
     config:
       uri: http://localhost:8888
       profile: default
-#      label: prod
-
-#    bus:
-#      enabled: true
-#      refresh:
-#        enabled: true
-
-#  rabbitmq:
-#    host: localhost
-#    port: 5672
-#    username: guest
-#    password: guest
-
-
-## Actuator
-### $ curl localhost:8080/actuator/refresh -d {} -H "Content-Type: application/json"
-#management:
-#  endpoints:
-#    web:
-#      exposure:
-#        include: '*'
-#
-#
-#  security:
-#    enabled: false
