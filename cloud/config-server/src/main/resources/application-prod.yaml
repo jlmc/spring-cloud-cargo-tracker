@@ -10,10 +10,10 @@ spring:
       server:
         git:
           uri: https://github.com/jlmc/micro-config-repo # http uri coped from the browser address
-          search-paths: warehouse-service, bookingms  # GitHub repo root folders
+          search-paths: bookingms  # GitHub repo root folders warehouse-service,
           default-label: master # branch name, it could be useful to have multiple environments, DEV, QA, PROD...
-          username: costajlmpp@gmail.com
-          # password: <you dev token>
+          #username: <your github username>
+          #password: <you git dev token>
           refresh-rate: 1
 
   rabbitmq:

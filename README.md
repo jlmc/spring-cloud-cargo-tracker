@@ -1,40 +1,47 @@
-#  Spring cloud cargo tracker
+# Spring Cloud
 
-**Note**: In almost every example we will need always some docker service, so, before you start and to prevent any unexpected problem, it is a good idea startup the following docker-compose services: 
+- It is providing projects to quickly develop microservices.
+- Spring cloud is having projects that will help the developers to quickly develop and maintain the micro-services.
+
+- If you want to check out all the projects provided by the spring cloud, then here is the official website (https://spring.io/projects/spring-cloud).
+
+- Cloud Foundry:  https://www.cloudfoundry.org/get-started/
+
+
+## Content
+
+* Configuration Server
+* Service Discovery
+* Client Load Balancer spring-feign
+* Declarative REST Client
+* Api-Gateway
+* Distribute tracing
+
+## Use case - Cargo tracker
+
+![cargo-tracker](documents/ms-architecture.png)
+
+> Demonstrate well established architectural patterns/blueprints for enterprise development with Jakarta EE using pretty close to a real world application.
+>
+> Demonstrate a concrete implementation of DDD concepts.
+
+- We are going to use the well-known cargo tracker case study project.
+- Of course, we will not use all the features, that wouldn't be of much interest in our examples, because we're trying to play with a different theme.
+
+- 🚀 I selected only three use cases that will serve as a basis for all the examples:
+
+## Use Cases
+
+To run the examples we must run the following command to start the dependent infrastructure services:
 
 ```shell
 docker-compose up rabbitmq postgres zipkin -d
 ```
 
-# services
-
-- [RabbitMQ](http://localhost:15672/#/exchanges)
-
-
-# build
+### Use Case 1: Booking a new cargo
 
 ```shell
-mvn clean package
-```
-
-## 1. start up rotting-ms
-```shell
-java -jar routingms/target/routingms-0.0.1-SNAPSHOT.jar
-```
-
-## 2. start up booking-ms
-```shell
-java -jar bookingms/target/bookingms-0.0.1-SNAPSHOT.jar
-```
-
-
-# Api requests
-
-# booking ms
-
-
-```shell
-curl -L -m 500 -X POST 'localhost:8081/booking' \
+curl -L -m 500 -X POST 'localhost:9090/bookingms/booking' \
 -H 'Content-Type: application/json' \
 --data-raw '{
   "bookingAmount": 12,
@@ -44,16 +51,24 @@ curl -L -m 500 -X POST 'localhost:8081/booking' \
 }' | jq .
 ```
 
+#### Use Case 2: Route an existing cargo
 
 ```shell
-curl -L -m 500 -X GET 'localhost:8081/booking/c5016ff0' | jq .
+curl -L -m 500 -H'Authorization: GOAT' -H'X-SYS: x1' -X POST 'localhost:9090/bookingms/booking/623f0cbf/route'
 ```
+
+#### Use Case 3: Get Cargo details
 
 ```shell
-curl -L -m 500 -X POST 'localhost:8081/booking/c5016ff0/route' | jq .
+curl -L -m 500 -X GET 'localhost:9090/bookingms/booking/c5016ff0' | jq .
 ```
 
 
-## Presentation
+## Presentation slides
 
-- https://docs.google.com/presentation/d/1iyRaIIBAbdKFpFKbG1igTN78z19B1Dsn9af0hUVl7Co/edit#slide=id.g11e8f9b583c_0_1599
+- [spring-cloud-presentation.pdf](spring-cloud-presentation.pdf)
+
+## References
+
+- [Cloud Native Java - by Kenny Bastani, Josh Long](https://www.oreilly.com/library/view/cloud-native-java/9781449374631/)
+- [Spring Cloud Official Documentation](https://spring.io/projects/spring-cloud)

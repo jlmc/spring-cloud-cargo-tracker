@@ -2,10 +2,9 @@
 
 - [Eureka](https://cloud.spring.io/spring-cloud-netflix/reference/html/#netflix-eureka-client-starter)
 
+- Quando falamos de micro serviços, o design que melhor caracteriza esta abordagem, será a comunicação entre os serviços. Sabemos que os micro serviços falam entre si.
+- É muito comum encontrarmos a informações de Deploy de serviços Host e Porta ao longo de outros micro serviços que que os invocam .
 
-## Missing answers:
-
-- We need to decouple the microservices from each other.
 
 ```java
 TransitPath responseValue = 
@@ -14,25 +13,26 @@ TransitPath responseValue =
                 TransitPath.class);
 ```
 
-- this is problematic:
-  - The application knows deployments details about the routing service, host and port.
-  - If the routing changes then we will have to update all the service that is call him.
-
+- Isto é problematico na manutenção dos serviços:
+  - As aplicações têm demasiado conheciamento sobre as restantes aplicações, HOST e PORT.
+  - Colateralmente quando um determinado serviço mudar de localização, nós teremos de fazer update a todos os serviços.
 
 ## Service Register
 
-- We want a logical mapping from a service’s `ID` to the `hosts` and `ports` (the nodes) on which that service is available. 
-- A service registry is a good fit.
+- Para Solucionar este problema, o Spring cloud propoe, a utilização de uma service register.
+- Será um serviços o qual mantem e disponibiliza as informações necessarios a se conseguir chegar a um micro serviço. 
+  - ID
+  - HOST
+  - POST
 
 
-Spring Cloud provides the Discovery Client abstraction to make it easy for clients to work with different types of service registries.
-
+O Spring Cloud fornece a abstração do Discovery Client para facilitar o trabalho dos clientes com diferentes tipos de registros de serviço.
 - Apache Zookeeper
 - Hashicorp
 - Consul
 - Netflix Eureka
 
-In the Spring Cloud would the Netflix Eureka the most used one. It is served by Netflix, scales very well, and is also easy enough to install and run.
+Netflix Eureka acaba por ser o mais usado. É servido pela Netflix, escalável muito bem e também é fácil de instalar e executar.
 
 While Netflix Eureka can be configured to do virtually anything, you shouldn’t undertake the work lightly. There’s a lot of value in having proven recipes for **security**, **scale**, and **redundancy**, **such as what you get when using spring cloud service-based Netflix installation on Pivotal Cloud Foundry or Pivotal Web Services**.
 
@@ -49,8 +49,8 @@ Hopefully, if you are using a platform (like Cloud Foundry) that can automate th
 </dependency>
 ```
 
-  - This is just the very basic initial necessary configuration to get started.
-  - For production environments you need to pay attention in certain aspects like, **security**, **scale**, and **redundancy**. 
+- This is just the very basic initial necessary configuration to get started.
+- For production environments you need to pay attention in certain aspects like, **security**, **scale**, and **redundancy**. 
 
 
 
@@ -97,7 +97,11 @@ $ http://localhost:8761/lastn
 $ curl -L -m 500 -X GET http://localhost:8761/eureka/apps
 ```
 
-## Configuring downstream services
+## Talking to the Registry
+
+Now that you have started a service registry, we need to teach the clients to register and fetch the consult the configurations. 
+
+- Configuring downstream services
 
 ```xml
 <!-- Service register-->
@@ -124,3 +128,11 @@ eureka:
     healthcheck:
       enabled: true
 ```
+
+
+
+
+You can stand up a client that both registers itself with the registry and uses the Spring Cloud `DiscoveryClient` abstraction to interrogate the registry for its own host and port. 
+
+The `@EnableDiscoveryClient` activates the Netflix Eureka `DiscoveryClient` implementation. 
+(There are other implementations for other service registries, such as Hashicorp’s Consul or Apache Zookeeper). 

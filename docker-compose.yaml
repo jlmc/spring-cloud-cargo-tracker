@@ -27,7 +27,7 @@ services:
     command: postgres --max_prepared_transactions=100
     volumes:
       - ./docker/postgres/init-user-db.sh:/docker-entrypoint-initdb.d/init-user-db.sh
-      - .volumes/mongodb/warehouse-db:/var/lib/postgresql/data
+      - .volumes/postgres/bookingms-db:/var/lib/postgresql/data
     networks:
       - cargo-network
 

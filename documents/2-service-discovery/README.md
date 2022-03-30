@@ -102,6 +102,8 @@ curl -L -m 500 -X GET http://localhost:8761/eureka/apps
 ```
 
 
+# Talking to the Registry
+
 ## Apply Service Discovery client in the downstream services
 
 1. add dependencies

@@ -19,7 +19,7 @@ class CargoRoutingOpenfeignConfig {
 
 3. apply configuration
 
-```
+```java
 @FeignClient(
         value = "routingms",
         contextId="routingmsOpenfeign",
@@ -41,7 +41,7 @@ public interface CargoRoutingOpenfeign {
 
 ---
 
-```
+```java
     @Bean
     @LoadBalanced
     public RestTemplate restTemplate(RestTemplateBuilder restTemplateBuilder) {

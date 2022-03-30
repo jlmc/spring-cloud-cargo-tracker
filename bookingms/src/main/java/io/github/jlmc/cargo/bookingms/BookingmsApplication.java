@@ -8,8 +8,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
 
-//@org.springframework.cloud.client.discovery.EnableDiscoveryClient
+// The `@EnableDiscoveryClient` activates the Netflix Eureka `DiscoveryClient` implementation.
+@org.springframework.cloud.client.discovery.EnableDiscoveryClient
 
+// The `@EnableFeignClients` enables FeignClient features
 @org.springframework.cloud.openfeign.EnableFeignClients
 
 @SpringBootApplication

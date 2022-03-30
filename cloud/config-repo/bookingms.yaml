@@ -1,5 +1,5 @@
 booking:
-  message: Hello message from config server, Ola, Hello!
+  message: Olá Equipas de Industries
 
 
 ## feign client
@@ -33,6 +33,12 @@ eureka:
       defaultZone: http://127.0.0.1:8761/eureka
     healthcheck:
       enabled: true
+  instance:
+    # what distinct ID do we want for each registered service, we can override the default attribution
+    # instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+    # instance-id: ${spring.cloud.client.hostname}:${spring.application.name}:${spring.application.instance_id:${server.port}}}
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${server.port}}:${random.value}
+    lease-renewal-interval-in-seconds: 10 # 30
 
 
 spring:
