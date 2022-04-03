@@ -48,7 +48,7 @@ public class CargoBookingCommandService {
     @Transactional(isolation = Isolation.SERIALIZABLE, readOnly = false)
     public void assignRouteToCargo(RouteCargoCommand routeCargoCommand){
         Cargo bookedCargo =
-                cargoRepository.findByBookingId(BookingId.of(routeCargoCommand.getBookingId()))
+                cargoRepository.findByBookingId(BookingId.of(routeCargoCommand.bookingId()))
                                .orElse(null);
 
         if (bookedCargo == null) return;

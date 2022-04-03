@@ -2,14 +2,14 @@ package io.github.jlmc.cargo.bookingms.application.internal.outboundservices.acl
 
 import feign.Feign;
 import feign.RequestInterceptor;
-import io.github.jlmc.cargo.bookingms.util.RequestHeadersContext;
+import io.github.jlmc.cargo.bookingms.infrastructure.http.RequestHeadersContext;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.cloud.loadbalancer.annotation.LoadBalancerClient;
 import org.springframework.cloud.loadbalancer.annotation.LoadBalancerClients;
 import org.springframework.context.annotation.Bean;
 
-import static io.github.jlmc.cargo.bookingms.util.RequestHeadersContext.AUTHORIZATION;
-import static io.github.jlmc.cargo.bookingms.util.RequestHeadersContext.X_SYS;
+import static io.github.jlmc.cargo.bookingms.infrastructure.http.RequestHeadersContext.AUTHORIZATION;
+import static io.github.jlmc.cargo.bookingms.infrastructure.http.RequestHeadersContext.X_SYS;
 
 @LoadBalancerClients({
         @LoadBalancerClient(value = "routingms")

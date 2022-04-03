@@ -17,6 +17,12 @@ feign:
 ## Actuator
 ### $ curl localhost:8080/actuator/refresh -d {} -H "Content-Type: application/json"
 management:
+  health:
+    circuitbreakers:
+      enabled: true
+  endpoint:
+    health:
+      show-details: always
   security:
     enabled: false
   endpoints:
@@ -113,3 +119,18 @@ logging:
 #      hibernate.cache: DEBUG
 #      hibernate.engine.transaction.internal.TransactionImpl: DEBUG
 #      hibernate.engine.jdbc.batch: DEBUG
+
+
+# Circuit Breaker
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      fetchRouteForSpecification:
+        sliding-window-size: 10 # last 10 calls
+        failure-rate-threshold: 50 # 50%
+        wait-duration-in-open-state: 30000 # 30s, the value must be in mills
+        automatic-transition-from-open-to-half-open-enabled: true
+        permitted-number-of-calls-in-half-open-state: 5
+        allowHealthIndicatorToFail: true
+        registerHealthIndicator: true

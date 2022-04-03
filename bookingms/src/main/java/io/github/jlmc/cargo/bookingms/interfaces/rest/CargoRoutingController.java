@@ -1,6 +1,6 @@
 package io.github.jlmc.cargo.bookingms.interfaces.rest;
 
-import io.github.jlmc.cargo.bookingms.util.RequestHeadersContext;
+import io.github.jlmc.cargo.bookingms.infrastructure.http.RequestHeadersContext;
 import io.github.jlmc.cargo.bookingms.application.internal.commandservices.CargoBookingCommandService;
 import io.github.jlmc.cargo.bookingms.interfaces.rest.dto.RouteCargoResource;
 import io.github.jlmc.cargo.bookingms.interfaces.rest.transform.RouteCargoCommandDTOAssembler;

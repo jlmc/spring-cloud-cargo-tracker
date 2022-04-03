@@ -1,4 +1,4 @@
-package io.github.jlmc.cargo.bookingms.util;
+package io.github.jlmc.cargo.bookingms.infrastructure.http;
 
 import org.springframework.core.NamedInheritableThreadLocal;
 import org.springframework.http.HttpHeaders;
