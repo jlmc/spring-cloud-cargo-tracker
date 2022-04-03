@@ -8,10 +8,17 @@ import io.github.jlmc.cargo.bookingms.domain.model.valueobjects.Leg;
 import io.github.jlmc.cargo.bookingms.domain.model.valueobjects.RouteSpecification;
 import io.github.jlmc.cargo.bookingms.shareddomain.TransitEdge;
 import io.github.jlmc.cargo.bookingms.shareddomain.TransitPath;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ExternalCargoRoutingService {
+
+    //@formatter:off
+    private static final Logger LOGGER = LoggerFactory.getLogger(ExternalCargoRoutingService.class);
+    //@formatter:on
 
     private final CargoRoutingWithRestTemplate restClint;
     private final CargoRoutingWithWebClient webClient;
@@ -25,6 +32,10 @@ public class ExternalCargoRoutingService {
         this.cargoRoutingOpenfeign = cargoRoutingOpenfeign;
     }
 
+    @CircuitBreaker(
+            name = "fetchRouteForSpecification",
+            fallbackMethod = "fallbackFetchRouteForSpecification"
+    )
     public CargoItinerary fetchRouteForSpecification(RouteSpecification routeSpecification) {
         //TransitPath transitPath = restClint.findOptimalRoute(routeSpecification);
         //TransitPath transitPath = webClient.findOptimalRoute(routeSpecification);
@@ -58,4 +69,11 @@ public class ExternalCargoRoutingService {
                 edge.getFromDate(),
                 edge.getToDate());
     }
+
+    public CargoItinerary fallbackFetchRouteForSpecification(RouteSpecification routeSpecification, Throwable throwable) {
+        LOGGER.error("Fallback Fetch Route For Specification <{}>", routeSpecification, throwable);
+
+        return new CargoItinerary();
+    }
+
 }

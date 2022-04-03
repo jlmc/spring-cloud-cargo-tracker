@@ -139,6 +139,12 @@
         <!-- / Sleuth with Brave tracer implementation -->
 
 
+        <!-- Circuit Breakers -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-circuitbreaker-resilience4j</artifactId>
+        </dependency>
+
         <!-- tests -->
 
         <dependency>

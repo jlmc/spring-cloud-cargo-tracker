@@ -1,6 +1,5 @@
 package io.github.jlmc.cargo.bookingms.domain.model.commands;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
